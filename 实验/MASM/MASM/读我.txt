@@ -1,0 +1,41 @@
+请将本文件夹放置在C:\MASM下。如果正确放置，这个文件的路径应该是C:\MASM\读我。
+点击快捷方式DOSBox.exe可进入DOS，点击MASMPlus.exe可进入MASMPlus编辑器环境。
+上述环境均已经配置完毕，可以直接使用。要检查环境是否正常，将下面一段代码粘贴到
+test.asm中，放置于MASM64文件夹下。
+
+        CODE    SEGMENT
+        ASSUME  CS:CODE
+
+        MAIN    PROC FAR
+        PUSH    DS
+        SUB     AX, AX
+        PUSH    AX
+START:
+        MOV     AL, 182
+        OUT     43H, AL
+        MOV     AX, 4560
+        OUT     42H, AL
+        MOV     AL, AH
+        OUT     42H, AL 
+        IN      AL, 61H
+        OR      AL, 00000011B
+        OUT     61H, AL
+        MOV     BX, 25
+.PAUSE1:
+        MOV     CX, 65535
+.PAUSE2:
+        DEC     CX
+        JNE     .PAUSE2
+        DEC     BX
+        JNE     .PAUSE1
+        IN      AL, 61H
+        AND     AL, 11111100B
+        OUT     61H, AL
+        RET
+        MAIN    ENDP
+
+        CODE    ENDS
+
+        END
+
+然后进入DOSBOX，依次输入 MASM TEST <三次回车>  LINK TEST <三次回车> TEST 三个命令，机器应当发出叫声。
